@@ -1,25 +1,18 @@
-
-
-
-
 # database.py
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Float
+from sqlalchemy import Integer, String, Text
 from flask_login import UserMixin
 
 
-
-
-
-# Define a base class for models
 class Base(DeclarativeBase):
     pass
 
-# Initialize the SQLAlchemy object, but don't call init_app here
+
+# Pass the Base class to SQLAlchemy - this is the correct pattern for flask_sqlalchemy 3.x
 db = SQLAlchemy(model_class=Base)
 
-# Define the User model
+
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -28,27 +21,22 @@ class User(UserMixin, db.Model):
     name: Mapped[str] = mapped_column(String(100))
 
 
-
-
 class University(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)  # Changed to match form field `uni_name`
-    logo_url = db.Column(db.String(255), nullable=True)  # Changed to match form field `uni_logo`
-    picture_url = db.Column(db.String(255), nullable=True)  # Changed to match form field `uni_picture`
-    description = db.Column(db.Text, nullable=False)  # Changed to match form field `uni_desc`
-    uni_off_page_url = db.Column(db.String(255), nullable=True)  # Changed to match form field `uni_official_page_link`
-    location = db.Column(db.String(100), nullable=False)  # Changed to match form field `uni_location`
-    language_of_education = db.Column(db.String(50), nullable=True)  # Changed to match form field `language_of_education`
-    prep_school = db.Column(db.String(255), nullable=True)  # Changed to match form field `prep_school`
-    study_programs_link = db.Column(db.String(255), nullable=True)  # Changed to match form field `study_programs_link`
-    application_deadline = db.Column(db.String(50), nullable=True)  # Changed to match form field `application_deadline`
-    application_fee = db.Column(db.String(50), nullable=True)  # Changed to match form field `application_fee`
-    tuition_fee = db.Column(db.String(50), nullable=True)  # Changed to match form field `tuition_fee`
-    tuition_fee_link = db.Column(db.String(255), nullable=True)  # Changed to match form field `tuition_fee_link`
-    requirements = db.Column(db.Text, nullable=True)  # Changed to match form field `requirements`
-    scholarship_available = db.Column(db.String(255), nullable=True)  # Changed to match form field `scholarship_available`
-    country = db.Column(db.String(50), nullable=False)  # Changed to match form field `country`
-
-    
-
-
+    __tablename__ = "universities"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    logo_url: Mapped[str] = mapped_column(String(255), nullable=True)
+    picture_url: Mapped[str] = mapped_column(String(255), nullable=True)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    uni_off_page_url: Mapped[str] = mapped_column(String(255), nullable=True)
+    location: Mapped[str] = mapped_column(String(100), nullable=False)
+    language_of_education: Mapped[str] = mapped_column(String(50), nullable=True)
+    prep_school: Mapped[str] = mapped_column(String(255), nullable=True)
+    study_programs_link: Mapped[str] = mapped_column(String(255), nullable=True)
+    application_deadline: Mapped[str] = mapped_column(String(50), nullable=True)
+    application_fee: Mapped[str] = mapped_column(String(50), nullable=True)
+    tuition_fee: Mapped[str] = mapped_column(String(50), nullable=True)
+    tuition_fee_link: Mapped[str] = mapped_column(String(255), nullable=True)
+    requirements: Mapped[str] = mapped_column(Text, nullable=True)
+    scholarship_available: Mapped[str] = mapped_column(String(255), nullable=True)
+    country: Mapped[str] = mapped_column(String(50), nullable=False)

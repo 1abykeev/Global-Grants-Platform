@@ -1,28 +1,18 @@
-
+import os
 from flask import Flask, render_template, url_for, redirect, flash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String, Float
-from flask_login import UserMixin
 from forms import RegisterForm, LoginForm, AddUniversityForm
 from werkzeug.security import generate_password_hash, check_password_hash
-import secrets
 from flask_login import LoginManager, login_user, current_user, logout_user
 from functools import wraps
 from flask import abort
 from database import db, User, Base, University
 from markupsafe import Markup
-
 import bleach
-
-
 
 app = Flask(__name__)
 
-
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///global_grants.db"
-secret_key = secrets.token_hex(16)
-app.config['SECRET_KEY'] = secret_key
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:////app/instance/global_grants.db')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'fallback-dev-key-change-in-production')
 
 db.init_app(app)
 
